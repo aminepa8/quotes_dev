@@ -1,46 +1,56 @@
 import 'package:flutter/material.dart';
 import 'quote.dart';
 import 'quote_card.dart';
-void main() => runApp(MaterialApp(
-  home:QuoteList(),
+import 'WebScraperApp.dart';
+void main() async{
+  WebScraperApp wb  = WebScraperApp();
+  List<Quote> quotesA =  await wb.fetchQuotes() ;
+
+  runApp(MaterialApp(
+  home:QuoteList(quotes: quotesA),
 ));
+}
 
 class QuoteList extends StatefulWidget {
+  List<Quote> quotes;
+  QuoteList({this.quotes});
   @override
-  _QuoteListState createState() => _QuoteListState();
+  _QuoteListState createState() => _QuoteListState(quotes: quotes);
 }
 
 class _QuoteListState extends State<QuoteList> {
-  List<Quote> quotes = [
-    Quote(text: 'Talk is cheap. Show me the code',author: 'Linus Torvalds'),
-    Quote(text: 'Programs must be written for people to read, and only incidentally for machines to execute.',author: 'Harold Abelson'),
-    Quote(text: 'How you look at it is pretty much how you\'ll see it',author: 'Rasheed Ogunlaru '),
 
-  ];
-
+  List<Quote> quotes ;
+  _QuoteListState({this.quotes});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
-        title: Text('Developer Quotes'),
+        title: Text('Scrapped Quotes'),
         centerTitle: true,
         backgroundColor: Colors.purple[400],
       ),
-      body:Column(
-        children: quotes.map((quote) => QuoteCard(
-            quote:quote,
-          delete:(){
-              setState(() {
-                quotes.remove(quote);
-              });
-          }
-
-        )).toList(),
-      ),
+    body:ListView.builder(
+          itemCount: quotes.length,
+          itemBuilder: (BuildContext context, int index) {
+            return QuoteCard(
+            quote:quotes[index],
+              delete:(){
+                setState(() {
+                  quotes.remove(quotes[index]);
+                  });
+              }
+            );}
+            )
     );
   }
+
+
+
 }
+
+
 
 
 
