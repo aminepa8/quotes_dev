@@ -1,4 +1,4 @@
-# Programmer quotes
+# Quotes
 
 Scrapped Quotes Flutter application.
 using web_scraper 0.0.5
